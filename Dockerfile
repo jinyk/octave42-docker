@@ -76,9 +76,8 @@ RUN apt-get update && apt-get -y install \
   rsync \
   tar \
   libosmesa6-dev \
-  libqt4-opengl-dev
-
-RUN apt-get autoclean
+  libqt4-opengl-dev && \
+  apt-get autoremove -y && apt-get clean -y
 
 COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
@@ -87,13 +86,13 @@ ENV DISPLAY :0
 # Change work directory to build Octave 4.2 from source
 WORKDIR /tmp
 
-RUN wget https://ftp.gnu.org/gnu/octave/octave-4.2.0.tar.gz \
-  tar -xvf octave-4.2.0.tar.gz \
-  rm octave-4.2.0.tar.gz \
-  cd octave-4.2.0 \
-  /tmp/octave-4.2.0/configure \
-  make -j4 \
-  make install \
+RUN wget https://ftp.gnu.org/gnu/octave/octave-4.2.0.tar.gz && \
+  tar -xvf octave-4.2.0.tar.gz && \
+  rm octave-4.2.0.tar.gz && \
+  cd octave-4.2.0 && \
+  /tmp/octave-4.2.0/configure && \
+  make -j4 && \
+  make install && \
   rm -rf /tmp/*
 
 WORKDIR /src
